@@ -1,0 +1,5 @@
+Version Beta 1.00
+    - AES 256 encryption for the password
+    - Open/New database of encrypted passwords
+    - Still on beta version
+    
