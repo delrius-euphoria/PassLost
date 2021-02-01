@@ -14,7 +14,3 @@ def insert(path,name,user,passw,url):
     c = con.cursor()
     c.execute('INSERT INTO {} VALUES(?,?,?)'.format(name),(user,passw,url))
     con.commit()
-
-if __name__ == '__main__':
-    print(read())
-    create('data.db','star')
