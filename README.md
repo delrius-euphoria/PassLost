@@ -1,6 +1,6 @@
 # PassLost
 
-A simple password manager that use AES 256 to encrypt and store passwords locally. The password is NOT visible to an outside AT ALL. Simple interface, using tkinter.
+A simple password manager that use AES 256 to encrypt and store passwords locally. The password is NOT visible to an outsider AT ALL. Simple interface, using tkinter.
 
 To run the app, clone this repository and `pip install -r requirements.txt` to install dependencies. 
 
