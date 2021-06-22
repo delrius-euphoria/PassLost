@@ -2,4 +2,7 @@ Version Beta 1.00
     - AES 256 encryption for the password
     - Open/New database of encrypted passwords
     - Still on beta version
-    
+
+Version Beta 2.00
+    - Switched from tkinter to PyQt for modern looks
+    - Fixed bugs
