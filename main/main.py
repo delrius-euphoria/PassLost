@@ -1,6 +1,6 @@
-import sys, os, sqlite3, make, hash
-from PySide2 import QtCore, QtGui
-from PySide2.QtWidgets import (QApplication, QMainWindow, QFileDialog, 
+import sys, os, sqlite3, db, process, temp
+from PySide6 import QtCore, QtGui
+from PySide6.QtWidgets import (QApplication, QMainWindow, QFileDialog, 
                 QMessageBox, QTableWidgetItem, QHeaderView, QMenu)
 from ui_splash_screen import Ui_Splash
 from ui_main import Ui_MainWindow
@@ -17,7 +17,7 @@ class SplashScreen(QMainWindow):
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.progress)
-        self.timer.start(35)
+        self.timer.start(19)
 
         self.count = 0
 
@@ -30,6 +30,7 @@ class SplashScreen(QMainWindow):
             self.close()
             app = MainApplication()
             app.show()
+            
         else:
             self.count += 1
 
@@ -62,43 +63,47 @@ class MainApplication(QMainWindow):
         self.ui.close_lbl.mousePressEvent = lambda e: self.close()
         self.ui.min_lbl.mousePressEvent   = lambda e: self.showMinimized()
 
-        self.file, self.filepath          = None, None
+        self.filepath = None
     
     def create_db(self):
         options         = QFileDialog.Options()
         self.filepath,_ = QFileDialog.getSaveFileName(self,"Choose a location to save","",
-                    "PassLost Files (*.pl)", options=options)
-        if self.filepath:
-            self.file   = os.path.basename(self.filepath).split('.')[0]
-        
+                    "PassLost Files (*.pl)", options=options)        
         self.ui.masterpw2_entry.setFocus()
 
     def finalize_db(self):
         main = self.ui.masterpw2_entry.text()
         conf = self.ui.confirmmasterpw2_entry.text()
         if main == conf:
-            self.k,salt = hash.pbkdf(main.encode('utf-8'))
-            if self.filepath and self.file:
-                make.create(self.filepath,self.file)
-                make.update(self.filepath, self.k+salt)
+            master_pw = main.encode('utf-8')
+            self.master_hash = process.hasher(master_pw)
+            self.key,salt = process.pbkdf(master_pw)
+
+            if self.filepath:
+                db.create(self.filepath)
+                db.update(self.filepath, self.master_hash, salt)
                 
-                QMessageBox(QMessageBox.Information,'Success','Database has been created').exec_()
+                QMessageBox(QMessageBox.Information,'Success','Database has been created').exec()
                 
                 self.refresh_page2()
                 self.display()
                 self.ui.stacked_wid.setCurrentIndex(2)
             else:
-                QMessageBox(QMessageBox.Warning,'Error','Please select a path for database first').exec_()
+                QMessageBox(QMessageBox.Warning,'Error','Please select a path for database first').exec()
         else:
-            QMessageBox(QMessageBox.Warning,'Error','Those passwords do not match, try again').exec_()
+            QMessageBox(QMessageBox.Warning,'Error','Those passwords do not match, try again').exec()
 
     def choose_db(self):
         options         = QFileDialog.Options()
-        self.filepath,_ = QFileDialog.getOpenFileName(self,"Choose a database to open","",
-                    "PassLost Files (*.pl)", options=options)
+        
+        directory = temp.reader()
+        
+        self.filepath,_ = QFileDialog.getOpenFileName(self,"Choose a database to open",
+        directory, "PassLost Files (*.pl)", options=options)
+        
         if self.filepath:
-            self.file   = os.path.basename(self.filepath).split('.')[0]
-            self.ui.choosefile_btn.setText(self.file+'.db')
+            file        = os.path.basename(self.filepath).split('.')[0]
+            self.ui.choosefile_btn.setText(file+'.db')
         
         self.ui.massterpw_entry.setFocus()
 
@@ -122,48 +127,50 @@ class MainApplication(QMainWindow):
            event.buttons() == QtCore.Qt.RightButton and
            source is self.ui.table.viewport()):
 
-            item = self.ui.table.itemAt(event.pos())
+            item = self.ui.table.itemAt(event.position().toPoint())
             if item is not None:
                 menu = QMenu()
                 menu.addAction('Copy password',lambda: self.copy(item.row()))
                 menu.addAction('Add new',lambda: self.ui.stacked_wid.setCurrentIndex(3))
-                menu.exec_(event.globalPos())
+                menu.exec(event.globalPosition().toPoint())
 
         return super().eventFilter(source,event)
     
     def copy(self,pos):
         con = sqlite3.connect(self.filepath)
-        c = con.cursor()
-        c.execute('SELECT password FROM {} where oid=?'.format(self.file),(pos+1,))
+        c   = con.cursor()
+        c.execute('SELECT password FROM DETAILS where oid=?',(pos+1,))
         res = c.fetchone()
+
+        pw  = process.decryptor(self.key,res[0])
         
-        pw = hash.unhasher(self.k,res[0])
-        
-        cb = QApplication.clipboard()
+        cb  = QApplication.clipboard()
         cb.clear(mode=cb.Clipboard)
         cb.setText(pw.decode(),mode=cb.Clipboard)
         
-        QMessageBox(QMessageBox.Information,'Success','The password has been copied').exec_()
+        QMessageBox(QMessageBox.Information,'Success','The password has been copied').exec()
 
     def validation(self,pw):
-        if self.filepath and self.file:
+        if self.filepath:
             con = sqlite3.connect(self.filepath)
             c   = con.cursor()
-            c.execute('SELECT * FROM password')
+            c.execute('SELECT * FROM MASTER')
+
             res = c.fetchone()
-            
-            self.k,s = res[0][:32],res[0][32:]
-            pw  = hash.pbkdf(pw.encode('utf-8'),s)
-            
-            if self.k == pw[0]:
+            master_hash, master_salt = res[0],res[1]
+            pw = pw.encode('utf-8')
+            self.key = process.pbkdf(pw,master_salt)[0]
+            user_hash = process.hasher(pw)
+
+            if master_hash == user_hash:
                 self.ui.stacked_wid.setCurrentIndex(2)
                 self.refresh_page1()
                 self.display()
             else:
-                QMessageBox(QMessageBox.Warning,'Error','The master password is incorrect, try again').exec_()
+                QMessageBox(QMessageBox.Warning,'Error','The master password is incorrect, try again').exec()
         
         else:
-            QMessageBox(QMessageBox.Warning,'Error','Please choose a database first').exec_()
+            QMessageBox(QMessageBox.Warning,'Error','Please choose a database first').exec()
 
     def add(self):
         user = self.ui.username_entry.text()
@@ -172,13 +179,14 @@ class MainApplication(QMainWindow):
         url  = self.ui.url_entry.text()
         
         if pw == conf and user and url:
-            con  = sqlite3.connect(self.filepath)    
-            enc = hash.hasher(self.k,pw.encode('utf-8'))
-            c = con.cursor()
-            c.execute('INSERT INTO {} VALUES (?,?,?)'.format(self.file),(user,enc,url))
+            con  = sqlite3.connect(self.filepath)  
+            c    = con.cursor()
+
+            enc  = process.encryptor(self.key,pw.encode('utf-8'))
+            c.execute('INSERT INTO DETAILS VALUES (?,?,?)',(user,enc,url))
             con.commit()
 
-            QMessageBox(QMessageBox.Information,'Success','Details have been entered onto the database').exec_()
+            QMessageBox(QMessageBox.Information,'Success','Details have been entered onto the database').exec()
             
             self.display()
             self.refresh_page4()
@@ -187,7 +195,7 @@ class MainApplication(QMainWindow):
     def refresh_table(self):
         con = sqlite3.connect(self.filepath)
         c = con.cursor()
-        c.execute('SELECT username,url FROM {}'.format(self.file))
+        c.execute('SELECT username,url FROM DETAILS')
         res = c.fetchall()
         
         for row_count,row_data in enumerate(res):
@@ -200,13 +208,13 @@ class MainApplication(QMainWindow):
     def mousePressEvent(self, event):
         if event.button() == QtGui.Qt.LeftButton:
             self.m_flag     = True
-            self.m_Position = event.globalPos()-self.pos() #Get the position of the mouse relative to the window
+            self.m_Position = event.globalPosition().toPoint()-self.pos() #Get the position of the mouse relative to the window
             event.accept()
             self.setCursor(QtGui.QCursor(QtGui.Qt.OpenHandCursor))  #Change mouse icon
             
     def mouseMoveEvent(self, QMouseEvent):
         if QtGui.Qt.LeftButton and self.m_flag:  
-            self.move(QMouseEvent.globalPos()-self.m_Position)#Change window position
+            self.move(QMouseEvent.globalPosition().toPoint()-self.m_Position)#Change window position
             QMouseEvent.accept()
             
     def mouseReleaseEvent(self, QMouseEvent):
@@ -226,9 +234,16 @@ class MainApplication(QMainWindow):
         self.ui.confrimpw_entry.setText('')
         self.ui.url_entry.setText('')
 
+    def closeEvent(self, event):
+        if self.filepath:
+            directory = os.path.dirname(self.filepath)
+            temp.writer(directory)
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
     window = SplashScreen()
     # window = MainApplication()
     window.show()
-    sys.exit(app.exec_())
+
+    sys.exit(app.exec())
