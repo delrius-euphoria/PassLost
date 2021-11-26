@@ -1,10 +1,8 @@
 # PassLost
 
-<<<<<<< HEAD
 A simple password manager that use SHA 256 to hash password and AES 256 to encrypt and store passwords locally. The password is NOT visible to an outsider AT ALL. Simple interface, using PyQt.
-=======
+
 A simple password manager that use AES 256 to encrypt and store passwords locally. The password is NOT visible to an outsider AT ALL. Simple, but modern interface, using PyQt.
->>>>>>> 694a17b6e5c2e5e983398ff5733c192032504d0c
 
 To run the app, download and install the installer from 'releases' **(Windows only, yet)**
 
