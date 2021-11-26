@@ -54,7 +54,6 @@ background-color: rgb(56, 58, 89)</string>
          </property>
          <property name="font">
           <font>
-           <family>Segoe UI</family>
            <pointsize>24</pointsize>
           </font>
          </property>
@@ -79,7 +78,6 @@ background-color: rgb(56, 58, 89)</string>
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -103,9 +101,7 @@ background-color: rgb(56, 58, 89)</string>
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -137,7 +133,6 @@ QPushButton:pressed{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -161,9 +156,7 @@ QPushButton:pressed{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
@@ -201,7 +194,6 @@ QLineEdit:focus{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -226,7 +218,6 @@ QLineEdit:focus{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -250,9 +241,7 @@ QLineEdit:focus{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -283,9 +272,7 @@ QPushButton:pressed{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -319,7 +306,6 @@ QPushButton:pressed{
          </property>
          <property name="font">
           <font>
-           <family>Segoe UI</family>
            <pointsize>24</pointsize>
           </font>
          </property>
@@ -344,7 +330,6 @@ QPushButton:pressed{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -368,9 +353,7 @@ QPushButton:pressed{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -402,7 +385,6 @@ QPushButton:pressed{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -426,9 +408,7 @@ QPushButton:pressed{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
@@ -466,7 +446,6 @@ QLineEdit:focus{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -490,9 +469,7 @@ QLineEdit:focus{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
@@ -529,9 +506,7 @@ QLineEdit:focus{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -565,9 +540,7 @@ QPushButton:pressed{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -645,9 +618,7 @@ QTableWidget::item{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -678,9 +649,7 @@ QPushButton:pressed{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -714,7 +683,6 @@ QPushButton:pressed{
          </property>
          <property name="font">
           <font>
-           <family>Segoe UI</family>
            <pointsize>24</pointsize>
           </font>
          </property>
@@ -738,9 +706,7 @@ QPushButton:pressed{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
@@ -787,7 +753,6 @@ QLineEdit:focus{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -811,9 +776,7 @@ QLineEdit:focus{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
@@ -854,7 +817,6 @@ QLineEdit:focus{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -878,9 +840,7 @@ QLineEdit:focus{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
@@ -918,7 +878,6 @@ QLineEdit:focus{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -942,9 +901,7 @@ QLineEdit:focus{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
@@ -991,7 +948,6 @@ QLineEdit:focus{
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
          </property>
@@ -1015,9 +971,7 @@ QLineEdit:focus{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -1048,9 +1002,7 @@ QPushButton:pressed{
           </rect>
          </property>
          <property name="font">
-          <font>
-           <family>Segoe UI</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton{
@@ -1154,13 +1106,12 @@ color: rgb(254, 121, 199);
       <rect>
        <x>40</x>
        <y>10</y>
-       <width>91</width>
+       <width>71</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Segoe UI</family>
        <pointsize>14</pointsize>
       </font>
      </property>
